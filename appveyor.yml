@@ -1,0 +1,43 @@
+version: 0.{build}
+skip_tags: true
+image: Visual Studio 2019
+configuration: Release
+install:
+- cmd: >-
+    git submodule update --init --recursive
+
+    premake5.bat
+build:
+  project: project_files/kakarot-screen-patch.sln
+  parallel: true
+  verbosity: minimal
+
+after_build:
+- ps: >-
+    $releases = "https://github.com/ThirteenAG/Ultimate-ASI-Loader/releases"
+
+    $name = "Ultimate-ASI-Loader_x64.zip"
+    
+    $latestRelease = Invoke-WebRequest $releases/latest -Headers @{"Accept"="application/json"}
+
+    $json = $latestRelease.Content | ConvertFrom-Json
+
+    $latestVersion = $json.tag_name
+
+    $url = "$releases/download/$latestVersion/$name"
+
+    Start-FileDownload $url -FileName 'C:\Ultimate-ASI-Loader_x64.zip'
+
+    7z e c:\Ultimate-ASI-Loader_x64.zip -oc:\projects\kakarot-screen-patch\output\asi\
+    
+    cd "output\asi\"
+    
+    mkdir plugins\
+    
+    copy dinput8.dll dsound.dll
+    
+    mv kakarot-screen-patch.asi plugins\ 
+            
+    7z a kakarot-screen-patch.zip plugins\kakarot-screen-patch.asi dsound.dll
+
+    Get-ChildItem .\*.zip  | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
