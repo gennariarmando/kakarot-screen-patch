@@ -52,27 +52,12 @@ void FixAspectRatio() {
     auto FOV_Pattern = get_pattern("E8 8A D6 99 01");
 
     // dword_2D1E83C
-    void* setFieldOfView[] = {
-        get_pattern("F3 0F 59 05 31 7F 2B 02", 4),
-        get_pattern("F3 0F 59 35 A2 30 4D 01", 4),
-        get_pattern("F3 0F 59 05 1C AF 49 01", 4),
-        get_pattern("F3 0F 59 05 7C AA 49 01", 4),
-        get_pattern("F3 0F 59 05 48 0A F2 00", 4), // Main FOV
-        get_pattern("F3 0F 59 15 65 08 F2 00", 4),
-        get_pattern("F3 0F 59 05 4A 49 EA 00", 4),
-        get_pattern("F3 0F 59 05 30 49 EA 00", 4),
-        get_pattern("F3 0F 59 05 DF 77 C6 00", 4),
-        get_pattern("F3 0F 59 05 85 77 C6 00", 4),
-        get_pattern("F3 0F 59 35 BD 63 C0 00", 4),
-        get_pattern("F3 0F 59 05 5D 16 A3 00", 4),
-    };
+    auto setFieldOfView = get_pattern("F3 0F 59 05 48 ? ? ? ? F9 1A C2 00", 4);
 
     ReadCall(FOV_Pattern, hbsub_1BC31F0);
     InjectHook(FOV_Pattern, trampoline->Jump(sub_1BC31F0), PATCH_CALL);
 
-    for (void* pattern : setFieldOfView) {
-        WriteOffsetValue(pattern, &fFOVMult);
-    }
+    WriteOffsetValue(setFieldOfView, &fFOVMult);
 
     // Fix aspect ratio.
     //get_pattern("F3 0F 11 47 18 8B 83 58 02 00 00");
@@ -93,7 +78,6 @@ struct handle_data {
     unsigned long process_id;
     HWND window_handle;
 };
-
 
 BOOL CALLBACK enum_windows_callback(HWND handle, LPARAM lparam) {
     auto& data = *reinterpret_cast<handle_data*>(lparam);
