@@ -49,10 +49,10 @@ void FixAspectRatio() {
     // Fiv FOV
     Trampoline* trampoline = Trampoline::MakeTrampoline(GetModuleHandle(nullptr));
 
-    auto FOV_Pattern = get_pattern("E8 8A D6 99 01");
+    auto FOV_Pattern = get_pattern("48 83 C1 40 E8 ? ? 99 01", 4);
 
     // dword_2D1E83C
-    auto setFieldOfView = get_pattern("F3 0F 59 05 48 ? ? ? ? F9 1A C2 00", 4);
+    auto setFieldOfView = get_pattern("F3 0F 59 05 ? ? ? ? E8 ? ? C2 00", 4);
 
     ReadCall(FOV_Pattern, hbsub_1BC31F0);
     InjectHook(FOV_Pattern, trampoline->Jump(sub_1BC31F0), PATCH_CALL);
@@ -60,7 +60,6 @@ void FixAspectRatio() {
     WriteOffsetValue(setFieldOfView, &fFOVMult);
 
     // Fix aspect ratio.
-    //get_pattern("F3 0F 11 47 18 8B 83 58 02 00 00");
     void* setAspectRatio[] = {
         get_pattern("C7 80 58 02 00 00 3B 8E E3 3F", 6),
         get_pattern("C7 87 5C 03 00 00 3B 8E E3 3F", 6),
