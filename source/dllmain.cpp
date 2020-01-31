@@ -49,7 +49,7 @@ void FixAspectRatio() {
     // Fiv FOV
     Trampoline* trampoline = Trampoline::MakeTrampoline(GetModuleHandle(nullptr));
 
-    auto FOV_Pattern = get_pattern("48 83 C1 40 E8 ? ? 99 01", 4);
+    auto FOV_Pattern = get_pattern("48 83 C1 40 E8 ? ? ? 01", 4);
 
     // dword_2D1E83C
     auto setFieldOfView = get_pattern("F3 0F 59 05 ? ? ? ? E8 ? ? C2 00", 4);
