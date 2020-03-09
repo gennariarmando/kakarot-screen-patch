@@ -13,12 +13,8 @@ std::tuple<int32_t, int32_t> GetWindowRes();
 static float& fAspectRatio = Trampoline::MakeTrampoline(GetModuleHandle(nullptr))->Reference<float>();
 static float& fFOVMult = Trampoline::MakeTrampoline(GetModuleHandle(nullptr))->Reference<float>();
 
-bool KeyPressed(unsigned int keyCode) {
-    return (GetKeyState(keyCode) & 0x8000) != 0;
-}
-
-__int64(__fastcall*hbsub_1BC31F0)(__int64);
-__int64 __fastcall sub_1BC31F0(__int64 a) {
+__int64(__fastcall*hbUpdateRoutine)(__int64);
+__int64 __fastcall UpdateRoutine(__int64 a) {
     uint32_t AspectRatioWidth, AspectRatioHeight;
     uint32_t ViewPortWidth, ViewPortHeight;
     float fCustomAspectRatioHor, fCustomAspectRatioVer;
@@ -36,7 +32,7 @@ __int64 __fastcall sub_1BC31F0(__int64 a) {
     float f = std::round((2.0f * atan(((fAspectRatio) / (16.0f / 9.0f)) * tan((0.0087266462f * 10000.0f) / 2.0f * ((float)M_PI / 180.0f)))) * (180.0f / (float)M_PI) * 100.0f) / 100.0f;
     fFOVMult = f / 10000.0f;
 
-    return hbsub_1BC31F0(a);
+    return hbUpdateRoutine(a);
 }
 
 void FixAspectRatio() {
@@ -49,13 +45,13 @@ void FixAspectRatio() {
     // Fiv FOV
     Trampoline* trampoline = Trampoline::MakeTrampoline(GetModuleHandle(nullptr));
 
-    auto FOV_Pattern = get_pattern("48 83 C1 40 E8 ? ? ? 01", 4);
+    auto fovPattern = get_pattern("48 83 C1 40 E8 ? ? 9A 01 48 8B C3", 4);
 
     // dword_2D1E83C
     auto setFieldOfView = get_pattern("F3 0F 59 05 ? ? ? ? E8 ? ? C2 00", 4);
 
-    ReadCall(FOV_Pattern, hbsub_1BC31F0);
-    InjectHook(FOV_Pattern, trampoline->Jump(sub_1BC31F0), PATCH_CALL);
+    ReadCall(fovPattern, hbUpdateRoutine);
+    InjectHook(fovPattern, trampoline->Jump(UpdateRoutine), PATCH_CALL);
 
     WriteOffsetValue(setFieldOfView, &fFOVMult);
 
