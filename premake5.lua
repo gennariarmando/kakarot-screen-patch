@@ -25,7 +25,7 @@ project "kakarot-screen-patch"
     disablewarnings { "4244", "4800", "4305", "4073", "4838", "4996", "4221", "4430" }
 	
 	filter "configurations:Debug"
-		targetname "kakarot-screen-patch"
+		targetname "KakarotScreenPatch"
 		defines { "DEBUG" }
 		staticruntime "on"
 		symbols "On"
@@ -33,7 +33,7 @@ project "kakarot-screen-patch"
 		debugcommand "$(DBZ_KAKAROT_DIR)/AT/Binaries/Win64/AT-Win64-Shipping.exe"
 
 	filter "configurations:Release"
-		targetname "kakarot-screen-patch"
+		targetname "KakarotScreenPatch"
 		defines { "NDEBUG" }
 		optimize "On"
 		staticruntime "on"

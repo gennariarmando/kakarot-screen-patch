@@ -1,3 +1,6 @@
 [submodule "source/Utils"]
 	path = source/Utils
 	url = https://github.com/CookiePLMonster/ModUtils.git
+[submodule "source/Avail"]
+	path = source/Avail
+	url = https://github.com/gennariarmando/avail
