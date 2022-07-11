@@ -33,6 +33,7 @@ project "kakarot-screen-patch"
 		debugcommand "$(DBZ_KAKAROT_DIR)/AT/Binaries/Win64/AT-Win64-Shipping.exe"
 
 	filter "configurations:Release"
+
 		targetname "KakarotScreenPatch"
 		defines { "NDEBUG" }
 		optimize "On"
