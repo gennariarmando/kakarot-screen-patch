@@ -7,9 +7,6 @@ A plugin that adds support to more resolutions for DRAGON BALL Z: KAKAROT.
 Grab latest [here](https://nightly.link/gennariarmando/kakarot-screen-patch/workflows/workflow/master/kakarot-screen-patch.zip).
 
 ### Install
-Get [Ultimate ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader).
-
-### Install
 Extract the archives content into your DRAGON BALL Z KAKAROT directory.
 Usually can be found here at this location:
 "C:\Program Files (x86)\Steam\SteamApps\common\DRAGON BALL Z KAKAROT\AT\Binaries\Win64"
